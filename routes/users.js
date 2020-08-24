@@ -4,12 +4,14 @@ import {
     deleteUser,
     findUser,
     getUser,
-    updateUser
+    updateUser,
+    getSuggestLogin
 } from '../controllers/users.js';
 
 const router = express.Router();
 
 router.get("/", getUser);
+router.get("/suggested-logins", getSuggestLogin);
 router.post("/", createUser);
 router.get('/:id', findUser);
 router.delete('/:id', deleteUser);

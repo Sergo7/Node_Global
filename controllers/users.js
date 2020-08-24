@@ -5,7 +5,10 @@ import {
     schemaValidation
 } from '../helpers/schemaValidation.js';
 
-let users = [];
+import {
+    getAutoSuggestUsers,
+    users
+} from '../helpers/autoSuggestUsers.js';
 
 export const createUser = (req, res) => {
     const data = req.body;
@@ -40,7 +43,6 @@ export const deleteUser = (req, res) => {
         id
     } = req.params;
 
-
     const user = users.find(user => user.id === id);
     if (user) user.isDeleted = true;
 
@@ -51,18 +53,35 @@ export const updateUser = (req, res) => {
     const {
         id
     } = req.params;
-
     const {
         login,
         password,
         age,
     } = req.body;
 
-    const user = users.find(user => user.id === id);
+    const schema = schemaValidation();
+    const validation = schema.validate(req.body);
 
-    if (login) user.login = login;
-    if (password) user.password = password;
-    if (age) user.age = age;
+    if (validation.error) {
+        res.status(400).send(validation.error.details[0].message);
+    } else {
+        const user = users.find(user => user.id === id);
 
-    res.send(`User with the id ${id} has been updated`);
+        if (login) user.login = login;
+        if (password) user.password = password;
+        if (age) user.age = age;
+
+        res.send(`User with the id ${id} has been updated`);
+    }
+};
+
+export const getSuggestLogin = (req, res) => {
+    const {
+        login,
+        limit
+    } = req.query;
+
+    const suggest = getAutoSuggestUsers(login, limit);
+
+    res.json(suggest);
 };
