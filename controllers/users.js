@@ -5,51 +5,55 @@ import {
     schemaValidation
 } from '../helpers/schemaValidation.js';
 
-import {
-    getAutoSuggestUsers,
-    users
-} from '../helpers/autoSuggestUsers.js';
+import { addUser, getUsers, getUserById, getAutoSuggestUsers } from '../database/database.js';
 
-export const createUser = (req, res) => {
+export const createUser = async (req, res) => {
     const data = req.body;
 
     const schema = schemaValidation();
     const validation = schema.validate(req.body);
 
+    const users = {
+        ...data,
+        id: uuidv4()
+    }
+
     if (validation.error) {
         res.status(400).send(validation.error.details[0].message);
     } else {
-        users.push({
-            ...data,
-            id: uuidv4()
-        });
+
+        await addUser(users);
+
         res.send(validation);
+
     }
 };
 
-export const getUser = (req, res) => res.send(users);
+export const getUser = async (req, res) => res.send(await getUsers());
 
-export const findUser = (req, res) => {
+export const findUser = async (req, res) => {
     const {
         id
     } = req.params;
 
-    const foundUser = users.find((user) => user.id === id);
-    res.send(foundUser);
+    const user = await getUserById(id);
+
+    res.send(user);
 };
 
-export const deleteUser = (req, res) => {
+export const deleteUser = async (req, res) => {
     const {
         id
     } = req.params;
 
-    const user = users.find(user => user.id === id);
+    const user = await getUserById(id);
+
     if (user) user.isDeleted = true;
 
     res.send(`User with the id ${id} deleted from the database.`);
 };
 
-export const updateUser = (req, res) => {
+export const updateUser = async (req, res) => {
     const {
         id
     } = req.params;
@@ -65,7 +69,7 @@ export const updateUser = (req, res) => {
     if (validation.error) {
         res.status(400).send(validation.error.details[0].message);
     } else {
-        const user = users.find(user => user.id === id);
+        const user = await getUserById(id);
 
         if (login) user.login = login;
         if (password) user.password = password;
