@@ -1,9 +1,14 @@
-import User from "../models/Users.js";
+import {
+    findAllUsers,
+    addUser,
+    findOneUser,
+    deleteUserById
+} from '../services/index.js';
 
 // Get all Users
 export const getUsers = async (req, res) => {
     try {
-        const users = await User.findAll();
+        const users = await findAllUsers();
 
         res.json({
             data: users
@@ -11,25 +16,12 @@ export const getUsers = async (req, res) => {
     } catch (e) {
         console.log(e);
     }
-
 };
 
 // Create and save new User
 export const createUser = async (req, res) => {
-    const {
-        login,
-        password,
-        age
-    } = req.body;
-
     try {
-        let newUser = await User.create({
-            login,
-            password,
-            age
-        }, {
-            fields: ["login", "password", "age"]
-        });
+        let newUser = await addUser(req.body);
 
         if (newUser) {
             return res.json({
@@ -52,11 +44,7 @@ export const getOneUser = async (req, res) => {
         id
     } = req.params;
 
-    const user = await User.findOne({
-        where: {
-            id
-        }
-    });
+    const user = await findOneUser(id);
 
     res.json(user);
 };
@@ -66,11 +54,8 @@ export const deleteUser = async (req, res) => {
     const {
         id
     } = req.params;
-    const deleteRowCount = await User.destroy({
-        where: {
-            id
-        }
-    });
+
+    const deleteRowCount = await deleteUserById(id);
 
     res.json({
         message: 'User deleted successfully',
@@ -90,12 +75,7 @@ export const updateUser = async (req, res) => {
         age
     } = req.body;
 
-    const users = await User.findAll({
-        attributes: ['id', 'login', 'password', 'age'],
-        where: {
-            id
-        }
-    });
+    const users = await findAllUsers(id);
 
     if (users.length > 0) {
         users.forEach(async user => {
