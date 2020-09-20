@@ -21,7 +21,7 @@ export const getUsers = async (req, res) => {
 // Create and save new User
 export const createUser = async (req, res) => {
     try {
-        let newUser = await addUser(req.body);
+        const newUser = await addUser(req.body);
 
         if (newUser) {
             return res.json({
@@ -55,12 +55,22 @@ export const deleteUser = async (req, res) => {
         id
     } = req.params;
 
-    const deleteRowCount = await deleteUserById(id);
+    try {
+        const deleteRowCount = await deleteUserById(id);
 
-    res.json({
-        message: 'User deleted successfully',
-        count: deleteRowCount
-    });
+        res.json({
+            message: 'User deleted successfully',
+            count: deleteRowCount
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Something goes wrong",
+            count: {}
+        });
+    }
+
 };
 
 // Update User
