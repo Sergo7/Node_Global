@@ -3,6 +3,8 @@ import {
     sequelize
 } from '../database/database.js';
 
+import Group from './Groups.js';
+
 const User = sequelize.define('users', {
     id: {
         type: Sequelize.INTEGER,
@@ -19,6 +21,16 @@ const User = sequelize.define('users', {
     }
 }, {
     timestamps: false
+});
+
+User.hasMany(Group, {
+    foreignKey: 'userid',
+    sourceKey: 'id'
+});
+
+Group.belongsTo(User, {
+    foreignKey: 'userid',
+    sourceKey: 'id'
 });
 
 export default User;

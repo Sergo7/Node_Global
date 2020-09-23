@@ -17,7 +17,7 @@ export const addUser = async ({
     password,
     age
 }) => {
-    return User.create({
+    return await User.create({
         login,
         password,
         age
