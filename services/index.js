@@ -1,4 +1,6 @@
-import User from "../models/Users.js";
+import {
+    User
+} from "../models/Users.js";
 
 export const findAllUsers = async id => {
     if (id) {
@@ -23,6 +25,11 @@ export const addUser = async ({
         age
     }, {
         fields: ["login", "password", "age"]
+    }, {
+        include: [{
+            model: Group,
+            as: 'groups'
+        }]
     });
 };
 
@@ -33,9 +40,8 @@ export const findOneUser = async id =>
         }
     });
 
-export const deleteUserById = async id =>
-    await User.destroy({
-        where: {
-            id
-        }
-    });
+export const deleteUserById = async id => await User.destroy({
+    where: {
+        id
+    }
+});

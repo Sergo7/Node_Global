@@ -1,4 +1,8 @@
 import Group from "../models/Groups.js";
+import {
+    User
+} from "../models/Users.js";
+
 
 export const addGroup = async ({
     name,
@@ -58,11 +62,30 @@ export const updateGroupById = async (
 };
 
 
-export const findAllUsersByGroup = async userid => {
-    return await Group.findAll({
-        attributes: ['id', 'userid', 'permission', 'name'],
-        where: {
-            userid
-        }
-    });
-};
+// export const setUserToGroup = async (userid, groupid) => {
+//     try {
+//         console.log("Body Params: ", req.body);
+//         let group = await Group.create({
+//             name: groupid,
+//         });
+
+//         let user = await User.findById(userid);
+
+//         //populate GroupUser join table
+//         await group.addUser(user);
+
+//         let usersGroups = await User.findById(req.body.userId, {
+//             include: [{
+//                 model: Group,
+//                 as: 'groups',
+//                 attributes: ['id', 'name']
+//             }]
+//         })
+
+//         res.status(201).send(usersGroups);
+//     } catch (error) {
+//         console.error("Group creation server error: ", error);
+//         res.status(500).send(error)
+//     };
+
+// };

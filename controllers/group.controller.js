@@ -4,7 +4,6 @@ import {
     deleteGroupById,
     findOneGroup,
     updateGroupById,
-    findAllUsersByGroup
 } from '../services/group-services.js';
 
 export const createGroup = async (req, res) => {
@@ -45,7 +44,6 @@ export const getOneGroup = async (req, res) => {
     res.json(
         group
     );
-
 };
 
 export const updateGroup = async (req, res) => {
@@ -87,16 +85,4 @@ export const deleteGroup = async (req, res) => {
             count: {}
         });
     }
-};
-
-export const getGroupByUser = async (req, res) => {
-    const {
-        userid
-    } = req.params;
-
-    const group = await findAllUsersByGroup(userid);
-
-    res.json({
-        group
-    });
 };

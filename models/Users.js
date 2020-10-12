@@ -4,8 +4,11 @@ import {
 } from '../database/database.js';
 
 import Group from './Groups.js';
+import {
+    UserGroup
+} from './User-Group.js';
 
-const User = sequelize.define('users', {
+export const User = sequelize.define('users', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true
@@ -23,14 +26,11 @@ const User = sequelize.define('users', {
     timestamps: false
 });
 
-User.hasMany(Group, {
-    foreignKey: 'userid',
-    sourceKey: 'id'
-});
 
-Group.belongsTo(User, {
-    foreignKey: 'userid',
-    sourceKey: 'id'
+// User.associate = function (models) {
+User.belongsToMany(Group, {
+    through: UserGroup,
+    as: 'groups',
+    foreignKey: 'userid'
 });
-
-export default User;
+// };

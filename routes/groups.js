@@ -5,8 +5,9 @@ import {
     getOneGroup,
     deleteGroup,
     updateGroup,
-    getGroupByUser
 } from '../controllers/group.controller.js';
+
+import { addUsersToGroup } from '../controllers/user-group.controller.js'
 
 const router = express.Router();
 
@@ -17,8 +18,7 @@ router.get('/:id', getOneGroup);
 router.delete('/:id', deleteGroup);
 router.put('/:id', updateGroup);
 
-// /api/users/group/userId
+router.post('/user-groups', addUsersToGroup);
 
-router.get('/user/:userid', getGroupByUser);
 
 export default router;
