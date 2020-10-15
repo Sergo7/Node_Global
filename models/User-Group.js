@@ -4,7 +4,7 @@ import {
 } from '../database/database.js';
 
 export const UserGroup = sequelize.define('userGroup', {
-    userId: {
+    userid: {
         type: Sequelize.INTEGER,
         references: {
             model: 'User',
@@ -12,7 +12,7 @@ export const UserGroup = sequelize.define('userGroup', {
             as: 'userid'
         }
     },
-    groupId: {
+    groupid: {
         type: Sequelize.INTEGER,
         references: {
             model: 'Group',

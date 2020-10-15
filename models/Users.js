@@ -3,11 +3,6 @@ import {
     sequelize
 } from '../database/database.js';
 
-import Group from './Groups.js';
-import {
-    UserGroup
-} from './User-Group.js';
-
 export const User = sequelize.define('users', {
     id: {
         type: Sequelize.INTEGER,
@@ -25,12 +20,3 @@ export const User = sequelize.define('users', {
 }, {
     timestamps: false
 });
-
-
-// User.associate = function (models) {
-User.belongsToMany(Group, {
-    through: UserGroup,
-    as: 'groups',
-    foreignKey: 'userid'
-});
-// };
