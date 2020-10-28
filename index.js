@@ -9,11 +9,6 @@ import {
 const PORT = 3000;
 const app = express();
 
-app.use((err, req, res, next) => {
-    console.log('req', req);
-    next();
-});
-
 app.use(express.json());
 
 //routes
