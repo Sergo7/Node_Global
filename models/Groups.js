@@ -3,20 +3,22 @@ import {
     sequelize
 } from '../database/database.js';
 
-export const User = sequelize.define('users', {
+const Group = sequelize.define('groups', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true
     },
-    login: {
+    name: {
         type: Sequelize.TEXT
     },
-    password: {
-        type: Sequelize.TEXT
+    permission: {
+        type: Sequelize.ARRAY(Sequelize.TEXT)
     },
-    age: {
+    userid: {
         type: Sequelize.INTEGER
     }
 }, {
     timestamps: false
 });
+
+export default Group;
