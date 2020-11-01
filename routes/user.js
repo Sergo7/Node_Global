@@ -11,40 +11,22 @@ import {
 import {
     UserValidation
 } from '../helpers/schemaValidation.js';
-
-import {
-    UserGroup
-} from "../models/User-Group.js";
-import Group from "../models/Groups.js";
-import {
-    User
-} from "../models/Users.js";
-
 import {
     logParams
 } from '../log/logger.js';
+import {
+    authenticateToken
+} from '../controllers/login.controller.js';
 
-export const router = express.Router();
+const router = express.Router();
 
 // /api/users/
-router.post("/", logParams, UserValidation, createUser);
-router.get("/", logParams, getUsers);
+router.post("/", logParams, authenticateToken, UserValidation, createUser);
+router.get("/", logParams, authenticateToken, getUsers);
 
 // /api/users/:userID
-router.get("/:id", logParams, getOneUser);
-router.delete("/:id", logParams, deleteUser);
-router.put("/:id", logParams, UserValidation, updateUser);
-
-User.belongsToMany(Group, {
-    through: UserGroup,
-    as: "groups",
-    foreignKey: "userid"
-});
-
-Group.belongsToMany(User, {
-    through: UserGroup,
-    as: "users",
-    foreignKey: "groupid"
-});
+router.get("/:id", logParams, authenticateToken, getOneUser);
+router.delete("/:id", logParams, authenticateToken, deleteUser);
+router.put("/:id", logParams, authenticateToken, UserValidation, updateUser);
 
 export default router;
