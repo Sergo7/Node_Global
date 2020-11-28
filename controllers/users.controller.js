@@ -10,9 +10,7 @@ export const getUsers = async (req, res) => {
     try {
         const users = await findAllUsers();
 
-        res.json({
-            data: users
-        });
+        res.json(users);
     } catch (e) {
         console.log(e);
     }
@@ -24,10 +22,7 @@ export const createUser = async (req, res) => {
         const newUser = await addUser(req.body);
 
         if (newUser) {
-            return res.json({
-                message: "User created successfully",
-                data: newUser
-            });
+            return res.json(newUser);
         }
     } catch (error) {
         console.log(error);
@@ -55,21 +50,9 @@ export const deleteUser = async (req, res) => {
         id
     } = req.params;
 
-    try {
-        const deleteRowCount = await deleteUserById(id);
+    await deleteUserById(id);
 
-        res.json({
-            message: 'User deleted successfully',
-            count: deleteRowCount
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message: "Something goes wrong",
-            count: {}
-        });
-    }
+    res.status(202);
 
 };
 
@@ -97,8 +80,5 @@ export const updateUser = async (req, res) => {
         });
     }
 
-    return res.json({
-        message: 'User Updated Successfully',
-        data: users
-    });
+    return res.json(users);
 };
