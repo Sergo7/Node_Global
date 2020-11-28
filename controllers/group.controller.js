@@ -11,13 +11,9 @@ export const createGroup = async (req, res) => {
         const newGroup = await addGroup(req.body);
 
         if (newGroup) {
-            return res.json({
-                message: "Group created successfully",
-                data: newGroup
-            });
+            return res.json(newGroup);
         }
     } catch (error) {
-        console.log(error);
         res.status(500).json({
             message: "Something goes wrong",
             data: {}
@@ -29,9 +25,7 @@ export const createGroup = async (req, res) => {
 export const getAllGroups = async (req, res) => {
     const groups = await findAllGroups();
 
-    res.json({
-        groups
-    });
+    res.json(groups);
 };
 
 export const getOneGroup = async (req, res) => {
@@ -51,17 +45,13 @@ export const updateGroup = async (req, res) => {
         id
     } = req.params;
     const {
-        userid,
         name,
         permission
     } = req.body;
 
-    const updatedGroup = await updateGroupById(userid, name, permission, id);
+    const updatedGroup = await updateGroupById(id, name, permission);
 
-    res.json({
-        message: 'Group updated',
-        updatedGroup
-    });
+    res.json(updatedGroup);
 
 };
 
@@ -70,19 +60,7 @@ export const deleteGroup = async (req, res) => {
         id
     } = req.params;
 
-    try {
-        const group = await deleteGroupById(id);
+    await deleteGroupById(id);
 
-        res.json({
-            message: 'Group deleted successfully',
-            count: group
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message: "Something goes wrong",
-            count: {}
-        });
-    }
+    res.status(202);
 };
